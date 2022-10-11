@@ -1,0 +1,45 @@
+Source: libobject-pad-perl
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: gregor herrmann <gregoa@debian.org>,
+           Jonas Smedegaard <dr@jones.dk>
+Section: perl
+Testsuite: autopkgtest-pkg-perl
+Priority: optional
+# don't add
+#               libfuture-perl <!nocheck>,
+#               libfuture-asyncawait-perl <!nocheck>,
+# otherwise we have a circular build dependency
+Build-Depends: debhelper-compat (= 13),
+               libdata-dump-perl <!nocheck>,
+               libextutils-cbuilder-perl,
+               libindirect-perl <!nocheck>,
+               libmodule-build-perl,
+               libsyntax-keyword-dynamically-perl <!nocheck>,
+               libtest-fatal-perl <!nocheck>,
+               libtest-memorygrowth-perl <!nocheck>,
+               libtest-refcount-perl <!nocheck>,
+               libtest-simple-perl <!nocheck>,
+               libxs-parse-keyword-perl (>= 0.19) <!nocheck>,
+               libxs-parse-sublike-perl,
+               perl-xs-dev,
+               perl:native
+Standards-Version: 4.6.0
+Vcs-Browser: https://salsa.debian.org/perl-team/modules/packages/libobject-pad-perl
+Vcs-Git: https://salsa.debian.org/perl-team/modules/packages/libobject-pad-perl.git
+Homepage: https://metacpan.org/release/Object-Pad
+Rules-Requires-Root: no
+
+Package: libobject-pad-perl
+Architecture: any
+Depends: ${misc:Depends},
+         ${perl:Depends},
+         ${shlibs:Depends},
+         libindirect-perl,
+         libxs-parse-keyword-perl (>= 0.19),
+         libxs-parse-sublike-perl
+Description: module providing a simple syntax for lexical slot-based objects
+ Object::Pad provides a simple syntax for creating object classes, which uses
+ private variables that look like lexicals as object member fields.
+ .
+ Classes are automatically provided with a constructor method, called new,
+ which helps create the object instances.

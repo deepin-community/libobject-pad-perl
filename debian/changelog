@@ -1,0 +1,163 @@
+libobject-pad-perl (0.56-1) unstable; urgency=medium
+
+  * Import upstream version 0.56.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 23 Oct 2021 02:57:09 +0200
+
+libobject-pad-perl (0.55-1) unstable; urgency=medium
+
+  * Import upstream version 0.55.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 15 Oct 2021 17:48:31 +0200
+
+libobject-pad-perl (0.54-1) unstable; urgency=medium
+
+  * Import upstream version 0.54.
+  * Bump versioned (build) dependency on libxs-parse-keyword-perl to 0.19.
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 11 Oct 2021 16:20:36 +0200
+
+libobject-pad-perl (0.53-1) unstable; urgency=medium
+
+  * Team upload
+
+  * New upstream version 0.53
+    + Support null-or-unary reader/writer accessors, called simply `:accessor`
+    + Bugfixes
+
+ -- Damyan Ivanov <dmn@debian.org>  Thu, 30 Sep 2021 08:27:19 +0000
+
+libobject-pad-perl (0.52-1) unstable; urgency=medium
+
+  [ upstream ]
+  * new release(s)
+
+  [ Gregor Herrmann ]
+  * New test and runtime dependency: libxs-parse-keyword-perl.
+  * Declare compliance with Debian Policy 4.6.0.
+  * Drop unneeded version constraints from (build) dependencies.
+  * Update Build-Depends for cross builds.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Tue, 28 Sep 2021 19:38:25 +0200
+
+libobject-pad-perl (0.37-1) unstable; urgency=medium
+
+  [ upstream ]
+  * new release
+    + don't get confused by sub signature parameters
+      of the same name as slot variables
+    + don't crash
+      if extends/implements package names are missing or malformed
+    + reject requests to make accessors with invalid identifier names
+
+  [ Jonas Smedegaard ]
+  * add myself as uploader
+
+ -- Jonas Smedegaard <dr@jones.dk>  Mon, 19 Apr 2021 18:42:23 +0200
+
+libobject-pad-perl (0.36-1) unstable; urgency=medium
+
+  * Import upstream version 0.36.
+  * Update years of upstream and packaging copyright.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 20 Feb 2021 18:35:56 +0100
+
+libobject-pad-perl (0.35-1) unstable; urgency=medium
+
+  * Import upstream version 0.35.
+  * Declare compliance with Debian Policy 4.5.1.
+
+ -- gregor herrmann <gregoa@debian.org>  Tue, 29 Dec 2020 21:06:30 +0100
+
+libobject-pad-perl (0.34-1) unstable; urgency=medium
+
+  * Import upstream version 0.34.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 07 Nov 2020 16:09:26 +0100
+
+libobject-pad-perl (0.33-1) unstable; urgency=medium
+
+  * Import upstream version 0.33.
+    Fixes "libobject-pad-perl breaks libtickit-widget-tabbed-perl
+    autopkgtest"
+    (Closes: #970339)
+
+ -- gregor herrmann <gregoa@debian.org>  Wed, 16 Sep 2020 16:32:08 +0200
+
+libobject-pad-perl (0.32-1) unstable; urgency=medium
+
+  * Import upstream version 0.32.
+
+ -- gregor herrmann <gregoa@debian.org>  Thu, 20 Aug 2020 03:50:17 +0200
+
+libobject-pad-perl (0.31-1) unstable; urgency=medium
+
+  * Import upstream version 0.31.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 03 Jul 2020 19:40:29 +0200
+
+libobject-pad-perl (0.30-1) unstable; urgency=medium
+
+  * Import upstream version 0.30.
+  * Update (build) dependencies.
+  * Drop debian/tests/pkg-perl/use-whitelist. The warnings are gone.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 20 Jun 2020 22:44:01 +0200
+
+libobject-pad-perl (0.29-1) unstable; urgency=medium
+
+  * Update 'DEB_BUILD_MAINT_OPTIONS = hardening=+bindnow' to '=+all'.
+  * Import upstream versions 0.28, 0.29.
+  * Update (build) dependencies.
+  * Bump debhelper-compat to 13.
+
+ -- gregor herrmann <gregoa@debian.org>  Tue, 16 Jun 2020 17:52:13 +0200
+
+libobject-pad-perl (0.26-2) unstable; urgency=medium
+
+  * Remove optional test dependencies which cause a circular build
+    dependency. Thanks to Niko Tyni for noticing.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 16 May 2020 13:06:22 +0200
+
+libobject-pad-perl (0.26-1) unstable; urgency=medium
+
+  * Import upstream version 0.26.
+  * Revert "Skip a test during build and autopkgtest which needs a not-
+    yet-packaged module."
+    The test dependency introduced in the last releases was removed again.
+
+ -- gregor herrmann <gregoa@debian.org>  Wed, 29 Apr 2020 18:39:35 +0200
+
+libobject-pad-perl (0.25-1) unstable; urgency=medium
+
+  * Import upstream version 0.25.
+  * Skip a test during build and autopkgtest which needs a not-yet-
+    packaged module.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 25 Apr 2020 16:54:19 +0200
+
+libobject-pad-perl (0.22-1) unstable; urgency=medium
+
+  * Import upstream version 0.22.
+  * Add new test dependency.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 17 Apr 2020 19:54:29 +0200
+
+libobject-pad-perl (0.20-1) unstable; urgency=medium
+
+  * Import upstream version 0.20.
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 13 Apr 2020 20:10:25 +0200
+
+libobject-pad-perl (0.19-2) unstable; urgency=medium
+
+  * Source-only no-change re-upload.
+
+ -- gregor herrmann <gregoa@debian.org>  Sun, 05 Apr 2020 15:43:31 +0200
+
+libobject-pad-perl (0.19-1) unstable; urgency=low
+
+  * Initial release (closes: #955754).
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 04 Apr 2020 18:20:19 +0200
