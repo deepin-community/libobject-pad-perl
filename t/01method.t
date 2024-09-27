@@ -1,17 +1,18 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
-use Test::Refcount;
+use Test2::V0 0.000148; # is_refcount
 
-use Object::Pad;
+use Object::Pad 0.800;
 
 class Point {
    BUILD { @$self = @_; }
 
    method where { sprintf "(%d,%d)", @$self }
+
+   method classname { return __CLASS__ }
 }
 
 {
@@ -20,6 +21,8 @@ class Point {
 
    is( $p->where, "(10,20)", '$p->where' );
    is_oneref( $p, '$p has refcount 1 after method' );
+
+   is( $p->classname, "Point", '__CLASS__ inside method' );
 }
 
 # anon methods
@@ -35,7 +38,7 @@ class Point {
    my $p = Point3->new( 1, 2, 3 );
    $p->$Point3::clearer();
 
-   is_deeply( [ @$p ], [ 0, 0, 0 ],
+   is( [ @$p ], [ 0, 0, 0 ],
       'anon method' );
 }
 
@@ -43,7 +46,7 @@ class Point {
 SKIP: {
    skip "This causes SEGV on perl 5.16 (RT132321)", 1 if $] lt "5.018";
    class RT132321 {
-      has $_genvalue;
+      field $_genvalue;
 
       BUILD {
          $_genvalue = method { 123 };

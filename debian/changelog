@@ -1,3 +1,260 @@
+libobject-pad-perl (0.814-1) unstable; urgency=medium
+
+  * Import upstream version 0.814.
+  * Bump versioned build and runtime dependency on
+    libxs-parse-sublike-perl.
+
+ -- gregor herrmann <gregoa@debian.org>  Wed, 25 Sep 2024 21:56:47 +0200
+
+libobject-pad-perl (0.813-1) unstable; urgency=medium
+
+  * Import upstream version 0.813.
+  * Bump versioned build and runtime dependency on
+    libxs-parse-keyword-perl.
+  * Drop debian/patches/typo-in-manual-page, applied upstream.
+  * Drop debian/clean, not needed anymore.
+
+ -- gregor herrmann <gregoa@debian.org>  Tue, 03 Sep 2024 22:50:29 +0200
+
+libobject-pad-perl (0.811-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream version 0.811
+  * d/patches:
+    - Add patch typo-in-manual-page
+  * d/u/metadata:
+    - Add Bug archive/submission details
+
+ -- Nick Morrott <nickm@debian.org>  Sun, 25 Aug 2024 09:40:21 +0100
+
+libobject-pad-perl (0.810-1) unstable; urgency=medium
+
+  * Import upstream version 0.810.
+  * Update test and runtime dependencies.
+
+ -- gregor herrmann <gregoa@debian.org>  Thu, 15 Aug 2024 15:55:55 +0200
+
+libobject-pad-perl (0.809-1) unstable; urgency=medium
+
+  * Import upstream version 0.809.
+  * Update years of upstream copyright.
+  * Declare compliance with Debian Policy 4.7.0.
+
+ -- gregor herrmann <gregoa@debian.org>  Wed, 24 Jul 2024 17:15:16 +0200
+
+libobject-pad-perl (0.808-1) unstable; urgency=medium
+
+  * Import upstream version 0.808.
+  * Update years of packaging copyright.
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 01 Jan 2024 02:10:03 +0100
+
+libobject-pad-perl (0.807-1) unstable; urgency=medium
+
+  * Import upstream version 0.807.
+  * Bump versioned (build) dependency on libxs-parse-keyword-perl.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 15 Dec 2023 20:54:57 +0100
+
+libobject-pad-perl (0.806-1) unstable; urgency=medium
+
+  * Import upstream version 0.806.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 17 Nov 2023 18:47:21 +0100
+
+libobject-pad-perl (0.805-1) unstable; urgency=medium
+
+  * Import upstream version 0.805.
+
+ -- gregor herrmann <gregoa@debian.org>  Thu, 26 Oct 2023 17:45:26 +0200
+
+libobject-pad-perl (0.803-1) unstable; urgency=medium
+
+  * Import upstream version 0.803.
+
+ -- gregor herrmann <gregoa@debian.org>  Sun, 24 Sep 2023 00:22:32 +0200
+
+libobject-pad-perl (0.802-1) unstable; urgency=medium
+
+  * Import upstream version 0.802.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 02 Sep 2023 16:53:02 +0200
+
+libobject-pad-perl (0.801-2) unstable; urgency=medium
+
+  * debian/clean: remove generated files. (Closes: #1046027)
+
+ -- gregor herrmann <gregoa@debian.org>  Sun, 13 Aug 2023 22:31:29 +0200
+
+libobject-pad-perl (0.801-1) unstable; urgency=medium
+
+  * Import upstream version 0.801.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 11 Aug 2023 02:08:46 +0200
+
+libobject-pad-perl (0.800-1) unstable; urgency=medium
+
+  * Import upstream version 0.800.
+  * Make (build) dependency on libxs-parse-keyword-perl versioned.
+
+ -- gregor herrmann <gregoa@debian.org>  Thu, 10 Aug 2023 14:38:36 +0200
+
+libobject-pad-perl (0.79-2) unstable; urgency=medium
+
+  * Drop build dependency on libsyntax-keyword-dynamically-perl to break a
+    dependency circle.
+    Thanks to Niko Tyni for the bug report. (Closes: #1040219)
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 03 Jul 2023 18:17:03 +0200
+
+libobject-pad-perl (0.79-1) unstable; urgency=medium
+
+  * Import upstream version 0.79.
+  * Update test dependencies.
+  * Update years of packaging copyright.
+  * Drop unneeded version constraints from (build) dependencies.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 24 Jun 2023 17:25:27 +0200
+
+libobject-pad-perl (0.78-1) unstable; urgency=medium
+
+  [ upstream ]
+  * new release
+
+  [ Jonas Smedegaard ]
+  * update copyright info: update coverage
+
+ -- Jonas Smedegaard <dr@jones.dk>  Fri, 13 Jan 2023 12:58:44 +0100
+
+libobject-pad-perl (0.77-1) unstable; urgency=medium
+
+  * Import upstream version 0.77.
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 19 Dec 2022 16:36:16 +0100
+
+libobject-pad-perl (0.76-1) unstable; urgency=medium
+
+  * Import upstream version 0.76.
+  * Declare compliance with Debian Policy 4.6.2.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 17 Dec 2022 13:34:39 +0100
+
+libobject-pad-perl (0.75-1) unstable; urgency=medium
+
+  * Import upstream version 0.75.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 16 Dec 2022 01:23:01 +0100
+
+libobject-pad-perl (0.74-1) unstable; urgency=medium
+
+  * Import upstream versions 0.73, 0.74.
+  * Bump versioned (build) dependency on libxs-parse-keyword-perl to 0.29.
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 05 Dec 2022 19:02:57 +0100
+
+libobject-pad-perl (0.71-1) unstable; urgency=medium
+
+  * Import upstream version 0.71.
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 21 Nov 2022 18:31:16 +0100
+
+libobject-pad-perl (0.70-1) unstable; urgency=medium
+
+  * Import upstream version 0.70.
+
+ -- gregor herrmann <gregoa@debian.org>  Sun, 30 Oct 2022 02:34:56 +0200
+
+libobject-pad-perl (0.68-2) unstable; urgency=medium
+
+  * Drop test dependency on libtest-memorygrowth-perl.
+    These tests cause more grief than gain.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 10 Sep 2022 22:52:10 +0200
+
+libobject-pad-perl (0.68-1) unstable; urgency=medium
+
+  * Import upstream version 0.68.
+
+ -- gregor herrmann <gregoa@debian.org>  Wed, 17 Aug 2022 20:15:25 +0200
+
+libobject-pad-perl (0.66-1) unstable; urgency=medium
+
+  * Import upstream version 0.66.
+  * Declare compliance with Debian Policy 4.6.1.
+  * Drop unneeded version constraints from (build) dependencies.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 09 Jul 2022 00:57:40 +0200
+
+libobject-pad-perl (0.65-1) unstable; urgency=medium
+
+  [ upstream ]
+  * new release
+
+ -- Jonas Smedegaard <dr@jones.dk>  Thu, 12 May 2022 10:15:58 +0200
+
+libobject-pad-perl (0.64-1) unstable; urgency=medium
+
+  * Import upstream version 0.64.
+
+ -- gregor herrmann <gregoa@debian.org>  Tue, 05 Apr 2022 18:18:36 +0200
+
+libobject-pad-perl (0.63-1) unstable; urgency=medium
+
+  * Import upstream version 0.63.
+  * Drop <!nocheck> from libxs-parse-keyword-perl build dependency.
+    It is needed for the actual build.
+  * Drop spelling.patch, fixed upstream.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 11 Mar 2022 21:57:50 +0100
+
+libobject-pad-perl (0.62-1) unstable; urgency=medium
+
+  * Team upload
+
+  * New upstream version 0.62
+  * Bump build- and run-time dependency on libxs-parse-keyword-perl from 0.19
+    to 0.22
+  * Patch POD fixing a couple of typos
+
+ -- Damyan Ivanov <dmn@debian.org>  Thu, 03 Mar 2022 08:11:50 +0000
+
+libobject-pad-perl (0.61-1) unstable; urgency=medium
+
+  * Import upstream version 0.61.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 18 Feb 2022 03:02:03 +0100
+
+libobject-pad-perl (0.60-1) unstable; urgency=medium
+
+  * Import upstream version 0.60.
+  * Update years of upstream and packaging copyright.
+  * Remove test dependency on libdata-dump-perl.
+  * Update short and long description: "slots" are called "fields" now.
+
+ -- gregor herrmann <gregoa@debian.org>  Wed, 02 Feb 2022 16:49:04 +0100
+
+libobject-pad-perl (0.59-1) unstable; urgency=medium
+
+  [ upstream ]
+  * new release
+
+  [ Jonas Smedegaard ]
+  * tighten (build-)dependency on libxs-parse-sublike-perl
+
+ -- Jonas Smedegaard <dr@jones.dk>  Thu, 16 Dec 2021 19:45:09 +0100
+
+libobject-pad-perl (0.58-1) unstable; urgency=medium
+
+  * Import upstream version 0.58.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 27 Nov 2021 01:04:53 +0100
+
+libobject-pad-perl (0.57-1) unstable; urgency=medium
+
+  * Import upstream version 0.57.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 20 Nov 2021 02:15:32 +0100
+
 libobject-pad-perl (0.56-1) unstable; urgency=medium
 
   * Import upstream version 0.56.

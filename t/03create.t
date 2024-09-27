@@ -1,17 +1,17 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
 use Scalar::Util qw( reftype );
 
-use Object::Pad;
+use Object::Pad 0.800;
 
 class Point {
-   has $x = 0;
-   has $y = 0;
+   field $x = 0;
+   field $y = 0;
 
    BUILD {
       ( $x, $y ) = @_;
@@ -42,12 +42,13 @@ class WithBuildargs {
 {
    WithBuildargs->new( 1, 2, 3 );
 
-   is_deeply( \@buildargs, [qw( WithBuildargs 1 2 3 )], '@_ to BUILDARGS' );
-   is_deeply( \@build,     [qw( 4 5 6 )],               '@_ to BUILD' );
+   is( \@buildargs, [qw( WithBuildargs 1 2 3 )], '@_ to BUILDARGS' );
+   is( \@build,     [qw( 4 5 6 )],               '@_ to BUILD' );
 }
 
 {
    my @called;
+   my $class_in_ADJUST;
 
    class WithAdjust {
       BUILD {
@@ -56,55 +57,42 @@ class WithBuildargs {
 
       ADJUST {
          push @called, "ADJUST";
+         $class_in_ADJUST = __CLASS__;
       }
    }
 
    WithAdjust->new;
-   is_deeply( \@called, [qw( BUILD ADJUST )], 'ADJUST invoked after BUILD' );
-}
+   is( \@called, [qw( BUILD ADJUST )], 'ADJUST invoked after BUILD' );
 
-{
-   my @called;
-   my $paramsref;
-
-   class WithAdjustParams {
-      ADJUST {
-         push @called, "ADJUST";
-      }
-
-      ADJUSTPARAMS {
-         my ( $href ) = @_;
-         push @called, "ADJUSTPARAMS";
-         $paramsref = $href;
-      }
-
-      ADJUST {
-         push @called, "ADJUST";
-         Test::More::ok( !scalar @_, 'ADJUST block received no arguments' );
-      }
-   }
-
-   WithAdjustParams->new( key => "val" );
-   is_deeply( \@called, [qw( ADJUST ADJUSTPARAMS ADJUST )], 'ADJUST and ADJUSTPARAMS invoked together' );
-   is_deeply( $paramsref, { key => "val" }, 'ADJUSTPARAMS received HASHref' );
+   is( $class_in_ADJUST, "WithAdjust", '__CLASS__ during ADJUST block' )
 }
 
 {
    my $paramvalue;
 
-   class StrictlyWithParams :strict(params) {
+   class StrictParams :strict(params) {
       ADJUSTPARAMS {
          my ($href) = @_;
          $paramvalue = delete $href->{param};
       }
    }
 
-   StrictlyWithParams->new( param => "thevalue" );
+   StrictParams->new( param => "thevalue" );
    is( $paramvalue, "thevalue", 'ADJUSTPARAMS captured the value' );
 
-   ok( !defined eval { StrictlyWithParams->new( unknown => "name" ) },
+   ok( !defined eval { StrictParams->new( unknown => "name" ) },
       ':strict(params) complains about unrecognised param' );
-   like( $@, qr/^Unrecognised parameters for StrictlyWithParams constructor: unknown at /,
+   like( $@, qr/^Unrecognised parameters for StrictParams constructor: 'unknown' at /,
+      'message from unrecognised param to constructor' );
+}
+
+# RT140314
+{
+   class NoParamsAtAll :strict(params) { }
+
+   ok( !defined eval { NoParamsAtAll->new( unknown => 1 ) },
+      ':strict(params) complains even with no ADJUST block' );
+   like( $@, qr/^Unrecognised parameters for NoParamsAtAll constructor: 'unknown' at /,
       'message from unrecognised param to constructor' );
 }
 
@@ -131,13 +119,36 @@ class WithBuildargs {
 # Create a base class with HASH representation
 {
    class NativelyHash :repr(HASH) {
-      has $slot = "value";
-      method slot { $slot }
+      field $field = "value";
+      method field { $field }
    }
 
    my $o = NativelyHash->new;
    is( reftype $o, "HASH", 'NativelyHash is natively a HASH reference' );
-   is( $o->slot, "value", 'native HASH objects still support slots' );
+   is( $o->field, "value", 'native HASH objects still support fields' );
+}
+
+# Create a base class with keys representation
+{
+   class NativelyHashWithKeys :repr(keys) {
+      field $s = "value";
+      field @a = ( 12, 34 );
+      field %h;
+      method fields { $s, \@a, \%h }
+   }
+
+   my $o = NativelyHashWithKeys->new;
+   is( reftype $o, "HASH", 'NativelyHashWithKeys is natively a HASH reference' );
+   is( [ $o->fields ], [ "value", [ 12, 34 ], {} ],
+      ':repr(keys) objects still support fields' );
+   is( $o->{'NativelyHashWithKeys/$s'}, "value",
+      ':repr(keys) object fields directly accessible' );
+   is( $o,
+      { 'NativelyHashWithKeys/$s' => "value",
+        'NativelyHashWithKeys/@a' => [ 12, 34 ],
+        'NativelyHashWithKeys/%h' => {},
+      },
+      ':repr(keys) object entirely' );
 }
 
 # Subclasses without BUILD shouldn't double-invoke superclass
@@ -146,7 +157,9 @@ class WithBuildargs {
    class One {
       BUILD { $BUILD_invoked++ }
    }
-   class Two isa One {}
+   class Two {
+      inherit One;
+   }
 
    Two->new;
    is( $BUILD_invoked, 1, 'One::BUILD invoked only once for Two->new' );

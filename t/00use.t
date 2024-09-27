@@ -1,11 +1,12 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
-use_ok( "Object::Pad" );
-use_ok( "Object::Pad::ExtensionBuilder" );
+require Object::Pad;
+require Object::Pad::ExtensionBuilder;
 
+pass "Modules loaded";
 done_testing;

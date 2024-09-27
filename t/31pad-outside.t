@@ -1,15 +1,15 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
-use Object::Pad;
+use Object::Pad 0.800;
 
 {
    class Counter {
-      has $count;
+      field $count;
       my $allcount = 0;
 
       method inc { $count++; $allcount++ }

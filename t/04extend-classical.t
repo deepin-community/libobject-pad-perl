@@ -1,14 +1,14 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
-use Object::Pad;
+use Object::Pad 0.800;
 
 class BaseClass {
-   has $data = 123;
+   field $data = 123;
 }
 
 package ExtendedClass {
@@ -18,7 +18,7 @@ package ExtendedClass {
 }
 
 my $obj = ExtendedClass->new;
-isa_ok( $obj, "ExtendedClass", '$obj' );
+isa_ok( $obj, [ "ExtendedClass" ], '$obj' );
 
 is( $obj->moremethod, 456, '$obj has methods from ExtendedClass' );
 

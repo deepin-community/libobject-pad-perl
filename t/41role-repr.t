@@ -1,11 +1,11 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
-use Object::Pad;
+use Object::Pad 0.800;
 
 role ARole {
    method one { return 1 }
@@ -15,7 +15,9 @@ package Base::HASH {
    sub new { bless {}, shift }
 }
 
-class Derived::HASH isa Base::HASH does ARole {
+class Derived::HASH {
+   inherit Base::HASH;
+   apply ARole;
 }
 
 {
@@ -28,7 +30,9 @@ package Base::ARRAY {
    sub new { bless [], shift }
 }
 
-class Derived::ARRAY isa Base::ARRAY does ARole {
+class Derived::ARRAY {
+   inherit Base::ARRAY;
+   apply ARole;
 }
 
 {

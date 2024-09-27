@@ -1,19 +1,18 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
-use Test::Fatal;
+use Test2::V0;
 
-use Object::Pad;
+use Object::Pad 0.800;
 
 package Base::Class {
    sub new {
       my $class = shift;
       my ( $ok ) = @_;
-      Test::More::is( $ok, "ok", '@_ to Base::Class::new' );
-      Test::More::is( scalar @_, 1, 'scalar @_ to Base::Class::new' );
+      ::is( $ok, "ok", '@_ to Base::Class::new' );
+      ::is( scalar @_, 1, 'scalar @_ to Base::Class::new' );
 
       return bless [ 123 ], $class;
    }
@@ -24,12 +23,14 @@ package Base::Class {
    }
 }
 
-class Derived::Class isa Base::Class {
-   has $derived_field = 456;
+class Derived::Class {
+   inherit Base::Class;
+
+   field $derived_field = 456;
 
    BUILD {
       my @args = @_;
-      Test::More::is_deeply( \@args, [ "ok" ], '@_ to Derived::Class::BUILD' );
+      ::is( \@args, [ "ok" ], '@_ to Derived::Class::BUILD' );
    }
 
    method fields {
@@ -44,11 +45,13 @@ class Derived::Class isa Base::Class {
 
    # We don't mind what the output here is but it should be well-behaved
    # and not crash the dumper
-   use Data::Dump 'pp';
+   use Data::Dumper;
 
-   is( pp($obj),
-      q(bless([123], "Derived::Class")),
-      'pp($obj) of Object::Pad-extended blessed ARRAY class' );
+   local $Data::Dumper::Sortkeys = 1;
+
+   is( Dumper($obj) =~ s/\s+//gr,
+      q($VAR1=bless([123],'Derived::Class');),
+      'Dumper($obj) of Object::Pad-extended blessed ARRAY class' );
 }
 
 done_testing;

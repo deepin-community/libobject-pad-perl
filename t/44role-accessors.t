@@ -1,17 +1,18 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
-use Object::Pad;
+use Object::Pad 0.800;
 
 role ARole {
-   has $one :reader = 1;
+   field $one :reader = 1;
 }
 
-class AClass does ARole {
+class AClass {
+   apply ARole;
 }
 
 # RT136507
@@ -21,10 +22,11 @@ class AClass does ARole {
 }
 
 role BRole {
-   has $data :reader :param;
+   field $data :reader :param;
 }
 
-class BClass does BRole {
+class BClass {
+   apply BRole;
 }
 
 {

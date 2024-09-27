@@ -1,11 +1,11 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
-use Object::Pad;
+use Object::Pad 0.800;
 
 {
    role ARole { method m {} }
@@ -13,8 +13,12 @@ use Object::Pad;
    my $warnings;
    $SIG{__WARN__} = sub { $warnings .= join "", @_ };
 
+   like( dies { ARole->new },
+      qr/^Cannot directly construct an instance of role 'ARole' /,
+      'failure from directly create a role instance' );
+
    ok( !eval <<'EOPERL',
-      class AClass does ARole { method m {} }
+      class AClass { apply ARole; method m {} }
 EOPERL
       'class with clashing method name fails' );
    like( $@, qr/^Method 'm' clashes with the one provided by role ARole /,
@@ -27,10 +31,10 @@ EOPERL
 }
 
 {
-   role BRole { requires bmeth; }
+   role BRole { method bmeth; }
 
    ok( !eval <<'EOPERL',
-      class BClass does BRole { }
+      class BClass { apply BRole; }
 EOPERL
       'class with missing required method fails' );
    like( $@, qr/^Class BClass does not provide a required method named 'bmeth' /,
@@ -39,11 +43,11 @@ EOPERL
 
 {
    ok( !eval <<'EOPERL',
-      role CRole :compat(invokable) { has $slot; }
+      role CRole :compat(invokable) { field $field; }
 EOPERL
-      'invokable role with slot fails' );
-   like( $@, qr/^Cannot add slot data to an invokable role /,
-      'message from failure of invokable role with slot' );
+      'invokable role with field fails' );
+   like( $@, qr/^Cannot add field data to an invokable role /,
+      'message from failure of invokable role with field' );
 }
 
 done_testing;

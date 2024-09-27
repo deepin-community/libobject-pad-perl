@@ -1,9 +1,5 @@
 /* vi: set ft=c : */
 
-#ifndef av_count
-#  define av_count(av)           (AvFILL(av) + 1)
-#endif
-
 #if HAVE_PERL_VERSION(5, 22, 0)
 #  define PadnameIsNULL(pn)  (!(pn))
 #else
@@ -12,6 +8,10 @@
 
 #ifndef hv_deletes
 #  define hv_deletes(hv, skey, flags)  hv_delete((hv), ("" skey ""), (sizeof(skey) - 1), flags)
+#endif
+
+#ifndef gv_fetchmeth_pvs
+#  define gv_fetchmeth_pvs(stash, name, level, flags)  gv_fetchmeth_pvn((stash), ("" name ""), (sizeof(name) - 1), level, flags)
 #endif
 
 #if HAVE_PERL_VERSION(5, 22, 0)
@@ -29,81 +29,6 @@ static char *S_save_strndup(pTHX_ char *s, STRLEN l)
   SAVEFREEPV(ret);
   return ret;
 }
-
-static char *PL_savetype_name[] PERL_UNUSED_DECL = {
-  /* These have been present since 5.16 */
-  [SAVEt_ADELETE]             = "ADELETE",
-  [SAVEt_AELEM]               = "AELEM",
-  [SAVEt_ALLOC]               = "ALLOC",
-  [SAVEt_APTR]                = "APTR",
-  [SAVEt_AV]                  = "AV",
-  [SAVEt_BOOL]                = "BOOL",
-  [SAVEt_CLEARSV]             = "CLEARSV",
-  [SAVEt_COMPILE_WARNINGS]    = "COMPILE_WARNINGS",
-  [SAVEt_COMPPAD]             = "COMPPAD",
-  [SAVEt_DELETE]              = "DELETE",
-  [SAVEt_DESTRUCTOR]          = "DESTRUCTOR",
-  [SAVEt_DESTRUCTOR_X]        = "DESTRUCTOR_X",
-  [SAVEt_FREECOPHH]           = "FREECOPHH",
-  [SAVEt_FREEOP]              = "FREEOP",
-  [SAVEt_FREEPV]              = "FREEPV",
-  [SAVEt_FREESV]              = "FREESV",
-  [SAVEt_GENERIC_PVREF]       = "GENERIC_PVREF",
-  [SAVEt_GENERIC_SVREF]       = "GENERIC_SVREF",
-  [SAVEt_GP]                  = "GP",
-  [SAVEt_GVSV]                = "GVSV",
-  [SAVEt_HELEM]               = "HELEM",
-  [SAVEt_HINTS]               = "HINTS",
-  [SAVEt_HPTR]                = "HPTR",
-  [SAVEt_HV]                  = "HV",
-  [SAVEt_I16]                 = "I16",
-  [SAVEt_I32]                 = "I32",
-  [SAVEt_I32_SMALL]           = "I32_SMALL",
-  [SAVEt_I8]                  = "I8",
-  [SAVEt_INT]                 = "INT",
-  [SAVEt_INT_SMALL]           = "INT_SMALL",
-  [SAVEt_ITEM]                = "ITEM",
-  [SAVEt_IV]                  = "IV",
-  [SAVEt_LONG]                = "LONG",
-  [SAVEt_MORTALIZESV]         = "MORTALIZESV",
-  [SAVEt_NSTAB]               = "NSTAB",
-  [SAVEt_OP]                  = "OP",
-  [SAVEt_PADSV_AND_MORTALIZE] = "PADSV_AND_MORTALIZE",
-  [SAVEt_PARSER]              = "PARSER",
-  [SAVEt_PPTR]                = "PPTR",
-  [SAVEt_REGCONTEXT]          = "REGCONTEXT",
-  [SAVEt_SAVESWITCHSTACK]     = "SAVESWITCHSTACK",
-  [SAVEt_SET_SVFLAGS]         = "SET_SVFLAGS",
-  [SAVEt_SHARED_PVREF]        = "SHARED_PVREF",
-  [SAVEt_SPTR]                = "SPTR",
-  [SAVEt_STACK_POS]           = "STACK_POS",
-  [SAVEt_SVREF]               = "SVREF",
-  [SAVEt_SV]                  = "SV",
-  [SAVEt_VPTR]                = "VPTR",
-
-#if HAVE_PERL_VERSION(5,18,0)
-  [SAVEt_CLEARPADRANGE]       = "CLEARPADRANGE",
-  [SAVEt_GVSLOT]              = "GVSLOT",
-#endif
-
-#if HAVE_PERL_VERSION(5,20,0)
-  [SAVEt_READONLY_OFF]        = "READONLY_OFF",
-  [SAVEt_STRLEN]              = "STRLEN",
-#endif
-
-#if HAVE_PERL_VERSION(5,22,0)
-  [SAVEt_FREEPADNAME]         = "FREEPADNAME",
-#endif
-
-#if HAVE_PERL_VERSION(5,24,0)
-  [SAVEt_TMPSFLOOR]           = "TMPSFLOOR",
-#endif
-
-#if HAVE_PERL_VERSION(5,34,0)
-  [SAVEt_STRLEN_SMALL]        = "STRLEN_SMALL",
-  [SAVEt_HINTS_HH]            = "HINTS_HH",
-#endif
-};
 
 #define dKWARG(count)      \
   U32 kwargi = count;      \
@@ -176,12 +101,14 @@ static void S_ensure_module_version(pTHX_ SV *module, SV *version)
   LEAVE;
 }
 
-#define fetch_superclass_method_pv(stash, pv, len, level)  S_fetch_superclass_method_pv(aTHX_ stash, pv, len, level)
+#if HAVE_PERL_VERSION(5, 16, 0)
+  /* TODO: perl 5.14 lacks HvNAMEUTF8, gv_fetchmeth_pvn() */
+#  define fetch_superclass_method_pv(stash, pv, len, level)  S_fetch_superclass_method_pv(aTHX_ stash, pv, len, level)
 static CV *S_fetch_superclass_method_pv(pTHX_ HV *stash, const char *pv, STRLEN len, U32 level)
 {
-#if HAVE_PERL_VERSION(5, 18, 0)
+#  if HAVE_PERL_VERSION(5, 18, 0)
   GV *gv = gv_fetchmeth_pvn(stash, pv, len, level, GV_SUPER);
-#else
+#  else
   SV *superclassname = newSVpvf("%*s::SUPER", HvNAMELEN_get(stash), HvNAME_get(stash));
   if(HvNAMEUTF8(stash))
     SvUTF8_on(superclassname);
@@ -189,12 +116,13 @@ static CV *S_fetch_superclass_method_pv(pTHX_ HV *stash, const char *pv, STRLEN 
 
   HV *superstash = gv_stashsv(superclassname, GV_ADD);
   GV *gv = gv_fetchmeth_pvn(superstash, pv, len, level, 0);
-#endif
+#  endif
 
   if(!gv)
     return NULL;
   return GvCV(gv);
 }
+#endif /* HAVE_PERL_VERSION(5, 16, 0) */
 
 #define get_class_isa(stash)  S_get_class_isa(aTHX_ stash)
 static AV *S_get_class_isa(pTHX_ HV *stash)
@@ -234,16 +162,6 @@ static bool MY_lex_consume_unichar(pTHX_ U32 c)
 
   lex_read_unichar(0);
   return TRUE;
-}
-
-#define sv_derived_from_hv(sv, hv)  MY_sv_derived_from_hv(aTHX_ sv, hv)
-static bool MY_sv_derived_from_hv(pTHX_ SV *sv, HV *hv)
-{
-  char *hvname = HvNAME(hv);
-  if(!hvname)
-    return FALSE;
-
-  return sv_derived_from_pvn(sv, hvname, HvNAMELEN(hv), HvNAMEUTF8(hv) ? SVf_UTF8 : 0);
 }
 
 #define av_push_from_av_inc(dst, src)    S_av_push_from_av(aTHX_ dst, src, TRUE)
