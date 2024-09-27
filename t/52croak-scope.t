@@ -1,29 +1,29 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
-use Object::Pad;
+use Object::Pad 0.800;
 
 {
    ok( !eval <<'EOPERL',
-      has $slot;
+      field $field;
 EOPERL
-      'has outside class fails' );
-   like( $@, qr/^Cannot 'has' outside of 'class' at /,
-      'message from failure of has' );
+      'field outside class fails' );
+   like( $@, qr/^Cannot 'field' outside of 'class' at /,
+      'message from failure of field' );
 }
 
 # RT132337
 {
    ok( !eval <<'EOPERL',
       class AClass { }
-      has $slot;
+      field $field;
 EOPERL
-      'has after closed class block fails' );
-   like( $@, qr/^Cannot 'has' outside of 'class' at /);
+      'field after closed class block fails' );
+   like( $@, qr/^Cannot 'field' outside of 'class' at /);
 }
 
 {
@@ -33,6 +33,17 @@ EOPERL
       'method outside class fails' );
    like( $@, qr/^Cannot 'method' outside of 'class' at /,
       'message from failure of method' );
+}
+
+{
+   ok( !eval <<'EOPERL',
+      class BClass {
+         my $c = __CLASS__;
+      }
+EOPERL
+      '__CLASS__ outside method fails' );
+   like( $@, qr/^Cannot use __CLASS__ outside of a /,
+      'message from failure of __CLASS__' );
 }
 
 done_testing;

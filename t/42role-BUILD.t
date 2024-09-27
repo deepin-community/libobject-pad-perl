@@ -1,11 +1,11 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
-use Object::Pad;
+use Object::Pad 0.800;
 
 my @BUILD;
 my @ADJUST;
@@ -15,9 +15,11 @@ role ARole {
   ADJUST { push @ADJUST, "ARole" }
 }
 
-class AClass does ARole {
-  BUILD { push @BUILD, "AClass" }
-  ADJUST { push @ADJUST, "AClass" }
+class AClass {
+   apply ARole;
+
+   BUILD { push @BUILD, "AClass" }
+   ADJUST { push @ADJUST, "AClass" }
 }
 
 {
@@ -26,15 +28,18 @@ class AClass does ARole {
 
    AClass->new;
 
-   is_deeply( \@BUILD, [qw( ARole AClass )],
+   is( \@BUILD, [qw( ARole AClass )],
       'Roles are built before their implementing classes' );
 
-   is_deeply( \@ADJUST, [qw( ARole AClass )],
+   is( \@ADJUST, [qw( ARole AClass )],
       'Roles are adjusted before their implementing classes' );
 }
 
-class BClass isa AClass does ARole {
-  BUILD { push @BUILD, "BClass" }
+class BClass {
+   inherit AClass;
+   apply ARole;
+
+   BUILD { push @BUILD, "BClass" }
 }
 
 {
@@ -42,8 +47,16 @@ class BClass isa AClass does ARole {
 
    BClass->new;
 
-   is_deeply( \@BUILD, [qw( ARole AClass BClass )],
+   is( \@BUILD, [qw( ARole AClass BClass )],
       'Roles are built once only even if implemented multiple times' );
+}
+
+# RT154494
+{
+   use Object::Pad ':experimental(composed_adjust)';
+
+   role RT154494Role { }
+   pass( 'Managed to compile a role under :experimental(composed_adjust)' );
 }
 
 done_testing;

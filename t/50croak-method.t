@@ -1,14 +1,14 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
-use Object::Pad;
+use Object::Pad 0.800;
 
 class Point {
-   has $x;
+   field $x;
    method clear { $x = 0 }
 }
 

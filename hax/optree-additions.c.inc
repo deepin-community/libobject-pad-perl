@@ -3,6 +3,7 @@
 #define newAELEMOP(flags, first, key)  S_newAELEMOP(aTHX_ flags, first, key)
 static OP *S_newAELEMOP(pTHX_ U32 flags, OP *first, I32 key)
 {
+#if HAVE_PERL_VERSION(5,16,0)
   if(key >= -128 && key < 128 && first->op_type == OP_PADAV) {
     OP *o = newOP(OP_AELEMFAST_LEX, flags);
     o->op_private = (I8)key;
@@ -10,16 +11,9 @@ static OP *S_newAELEMOP(pTHX_ U32 flags, OP *first, I32 key)
     op_free(first);
     return o;
   }
+#endif
 
   return newBINOP(OP_AELEM, flags, first, newSVOP(OP_CONST, 0, newSViv(key)));
-}
-
-#define newPADxVOP(type, flags, padix)  S_newPADxVOP(aTHX_ type, flags, padix)
-static OP *S_newPADxVOP(pTHX_ I32 type, I32 flags, PADOFFSET padix)
-{
-  OP *op = newOP(type, flags);
-  op->op_targ = padix;
-  return op;
 }
 
 #if HAVE_PERL_VERSION(5, 22, 0)
@@ -77,3 +71,34 @@ static OP *S_newMETHOD_REDIR_OP(pTHX_ SV *rclass, SV *methname, I32 flags)
 
   return op;
 }
+
+/* If `@_` is called "snail", then elements of it can be called "slugs"; i.e.
+ * snails without their container
+ */
+#define newSLUGOP(idx)  S_newSLUGOP(aTHX_ idx)
+static OP *S_newSLUGOP(pTHX_ int idx)
+{
+  OP *op = newGVOP(OP_AELEMFAST, 0, PL_defgv);
+  op->op_private = idx;
+  return op;
+}
+
+#ifndef newLISTOPn
+/* newLISTOPn was added in 5.39.3 */
+#  define newLISTOPn(type, flags, ...)  S_newLISTOPn(aTHX_ type, flags, __VA_ARGS__)
+static OP *S_newLISTOPn(pTHX_ OPCODE type, U32 flags, ...)
+{
+  va_list args;
+  va_start(args, flags);
+
+  OP *o = newLISTOP(OP_LIST, 0, NULL, NULL);
+
+  OP *kid;
+  while((kid = va_arg(args, OP *)))
+    o = op_append_elem(OP_LIST, o, kid);
+
+  va_end(args);
+
+  return op_convert_list(type, flags, o);
+}
+#endif

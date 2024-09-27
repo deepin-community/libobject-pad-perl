@@ -1,11 +1,11 @@
 #!/usr/bin/perl
 
-use v5.14;
+use v5.18;
 use warnings;
 
-use Test::More;
+use Test2::V0;
 
-use Object::Pad;
+use Object::Pad;  # no version
 
 {
    no strict;
@@ -62,7 +62,7 @@ EOPERL
       #   different error semantics. It gives a generic "syntax error" plus
       #   warnings
       like( $warnings,
-         qr/^Bareword found where operator expected at \(eval /,
+         qr/^Bareword found where operator expected (?:\(Do you need to predeclare "foo"\?\) )?at \(eval /,
          'warnings from failure of no feature "indirect"' );
       like( $e,
          qr/^syntax error at \(eval /,
